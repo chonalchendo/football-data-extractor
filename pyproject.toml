@@ -6,7 +6,7 @@ authors = ["chonalchendo <110059232+chonalchendo@users.noreply.github.com>"]
 license = "MIT"
 readme = "README.md"
 packages = [
-    { include = "transfermarkt.transfermarkt" },
+    { include = "transfermarkt/transfermarkt" },
 ]
 
 [tool.poetry.dependencies]

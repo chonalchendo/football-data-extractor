@@ -5,6 +5,9 @@ description = "Repo that scrapes football data from multiple web sources."
 authors = ["chonalchendo <110059232+chonalchendo@users.noreply.github.com>"]
 license = "MIT"
 readme = "README.md"
+packages = [
+    { include = "transfermarkt.transfermarkt", from = "." },
+]
 
 [tool.poetry.dependencies]
 python = "^3.12"

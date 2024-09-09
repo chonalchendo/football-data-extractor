@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "football-data-extractor"
+version = "0.1.0"
+description = "Repo that scrapes football data from multiple web sources."
+authors = ["chonalchendo <110059232+chonalchendo@users.noreply.github.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+scrapy = "^2.11.2"
+black = "^24.8.0"
+beautifulsoup4 = "^4.12.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

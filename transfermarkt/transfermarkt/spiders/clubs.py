@@ -15,6 +15,13 @@ class ClubsSpider(scrapy.Spider):
         self.seasons = seasons.split(", ") if seasons and seasons != 'all' else []
 
     def parse(self, response):
+        """
+        Parse the response and extract the team names and ids
+
+        @url https://transfermarkt.co.uk/premier-league/startseite/wettbewerb/GB1/plus/?saison_id=2018
+        @returns items 1
+        @scrapes team_name team_id
+        """
         soup = BeautifulSoup(response.text, 'html.parser') 
         team_info = soup.find_all("td", {"class": "hauptlink no-border-links"})
         team_name = [td.find("a").get("href").split("/")[1] for td in team_info]
@@ -24,7 +31,10 @@ class ClubsSpider(scrapy.Spider):
 
 
     def start_requests(self):
-
+        """
+        Start the requests for the given leagues and seasons.
+        @returns request 1
+        """
         match self.leagues:
             case 'all':
                 self.leagues = list(league_map.keys())

@@ -91,3 +91,10 @@ COOKIES_ENABLED = False
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
+FEEDS = {
+    'data/%(name)s.json.gz': {
+        'format': 'jsonlines',
+        'encoding': 'utf-8',
+        'overwrite': True,
+    }
+}

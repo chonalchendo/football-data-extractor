@@ -1,6 +1,7 @@
-from ..base import Parser
-from bs4 import BeautifulSoup
 import polars as pl
+from bs4 import BeautifulSoup
+
+from ..base import Parser
 
 
 class CurrentClubs(Parser):
@@ -11,4 +12,3 @@ class CurrentClubs(Parser):
             td.find("a").get("title") if td.find("a") else None for td in current_clubs
         ]
         return pl.Series(current_clubs, name="current_club")
-

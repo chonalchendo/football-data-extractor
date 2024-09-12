@@ -1,7 +1,7 @@
-
 from abc import ABC, abstractmethod
-from bs4 import BeautifulSoup
+
 import polars as pl
+from bs4 import BeautifulSoup
 
 
 class Parser(ABC):

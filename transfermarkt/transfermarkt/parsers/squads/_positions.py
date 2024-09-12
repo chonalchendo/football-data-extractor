@@ -1,6 +1,7 @@
-from ..base import Parser
-from bs4 import BeautifulSoup
 import polars as pl
+from bs4 import BeautifulSoup
+
+from ..base import Parser
 
 
 class Positions(Parser):
@@ -11,4 +12,3 @@ class Positions(Parser):
             for td in pos_soup
         ]
         return pl.Series(positions, name="position")
-

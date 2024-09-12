@@ -1,5 +1,5 @@
-from bs4 import BeautifulSoup
 import polars as pl
+from bs4 import BeautifulSoup
 
 from ..base import Parser
 

@@ -1,6 +1,7 @@
-from ..base import Parser
-from bs4 import BeautifulSoup
 import polars as pl
+from bs4 import BeautifulSoup
+
+from ..base import Parser
 
 
 class Countries(Parser):
@@ -11,4 +12,3 @@ class Countries(Parser):
             td.find("img").get("title") if td.find("img") else None for td in countries
         ]
         return pl.Series(countries, name="country")
-

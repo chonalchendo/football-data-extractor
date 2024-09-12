@@ -1,6 +1,7 @@
-from ..base import Parser
-from bs4 import BeautifulSoup
 import polars as pl
+from bs4 import BeautifulSoup
+
+from ..base import Parser
 
 
 class Heights(Parser):
@@ -9,4 +10,3 @@ class Heights(Parser):
         heights = [stat for stat in stats[4::8]]
         heights = [td.text if td.text else None for td in heights]
         return pl.Series(heights, name="height")
-

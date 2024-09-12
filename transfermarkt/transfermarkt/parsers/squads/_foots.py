@@ -1,6 +1,7 @@
-from ..base import Parser
-from bs4 import BeautifulSoup
 import polars as pl
+from bs4 import BeautifulSoup
+
+from ..base import Parser
 
 
 class Foot(Parser):
@@ -9,4 +10,3 @@ class Foot(Parser):
         foots = [stat for stat in stats[5::8]]
         foots = [td.text if td.text else None for td in foots]
         return pl.Series(foots, name="foot")
-

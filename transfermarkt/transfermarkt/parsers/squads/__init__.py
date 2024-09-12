@@ -1,19 +1,19 @@
 from collections.abc import Sequence
+
+from ..base import Parser
 from ._ages import Ages
 from ._countries import Countries
 from ._current_clubs import CurrentClubs
+from ._foots import Foot
 from ._heights import Heights
-from ._names import Names
-from ._positions import Positions
-from ._values import Values
 from ._joined_dates import JoinedDate
+from ._names import Names
 from ._numbers import Numbers
+from ._positions import Positions
 from ._signing_info import SigningInfo
 from ._tm_ids import TransfermarktId
 from ._tm_names import TransfermarktName
-from ._foots import Foot
-
-from ..base import Parser
+from ._values import Values
 
 squad_parsers: Sequence[Parser] = (
     Ages(),
@@ -34,4 +34,3 @@ squad_parsers: Sequence[Parser] = (
 __all__ = [
     "squad_parsers",
 ]
-

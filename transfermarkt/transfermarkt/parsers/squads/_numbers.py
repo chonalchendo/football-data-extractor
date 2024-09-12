@@ -1,6 +1,7 @@
-from ..base import Parser
-from bs4 import BeautifulSoup
 import polars as pl
+from bs4 import BeautifulSoup
+
+from ..base import Parser
 
 
 class Numbers(Parser):
@@ -16,4 +17,3 @@ class Numbers(Parser):
             for td in numbers
         ]
         return pl.Series(numbers, name="number")
-

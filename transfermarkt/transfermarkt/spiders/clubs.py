@@ -1,7 +1,9 @@
 from urllib.parse import parse_qs, urlparse
+from typing import Iterator
 
 import scrapy
 from bs4 import BeautifulSoup
+from scrapy.http import Response
 
 from ..config.leagues import league_map
 
@@ -11,7 +13,7 @@ class ClubsSpider(scrapy.Spider):
     allowed_domains = ["transfermarkt.co.uk"]
     base_url = "https://transfermarkt.co.uk/{league}/startseite/wettbewerb/{league_id}/plus/?saison_id={year}"
 
-    def __init__(self, leagues=None, seasons=None, *args, **kwargs):
+    def __init__(self, leagues=None, seasons=None, *args, **kwargs) -> None:
         super(ClubsSpider, self).__init__(*args, **kwargs)
         match leagues:
             case "all":
@@ -29,7 +31,7 @@ class ClubsSpider(scrapy.Spider):
             case _:
                 self.seasons = seasons.split(", ")
 
-    def parse(self, response):
+    def parse(self, response: Response) -> Iterator[dict]:
         """
         Parse the response and extract the team names and ids
 
@@ -54,7 +56,7 @@ class ClubsSpider(scrapy.Spider):
             "team_id": team_id,
         }
 
-    def start_requests(self):
+    def start_requests(self) -> Iterator[scrapy.Request]:
         """
         Start the requests for the given leagues and seasons.
         @returns request 1

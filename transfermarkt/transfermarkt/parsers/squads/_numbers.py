@@ -5,7 +5,7 @@ from ..base import Parser
 
 
 class Numbers(Parser):
-    def parse(self, soup: BeautifulSoup) -> pl.Series:
+    def parse(self, soup: BeautifulSoup) -> pl.DataFrame:
         stats = soup.find_all("td", {"class": "zentriert"})
         numbers = [stat for stat in stats[0::8]]
         numbers = [
@@ -16,4 +16,4 @@ class Numbers(Parser):
             )
             for td in numbers
         ]
-        return pl.Series(numbers, name="number")
+        return pl.DataFrame({"number": numbers})

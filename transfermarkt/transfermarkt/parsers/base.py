@@ -8,5 +8,5 @@ class Parser(ABC):
     """ABC Protocol class for parsing data from transfermarkt."""
 
     @abstractmethod
-    def parse(self, soup: BeautifulSoup) -> pl.DataFrame | pl.Series | tuple:
+    def parse(self, soup: BeautifulSoup) -> pl.DataFrame:
         pass

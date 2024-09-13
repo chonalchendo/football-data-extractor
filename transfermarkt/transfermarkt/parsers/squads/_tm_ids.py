@@ -5,10 +5,10 @@ from ..base import Parser
 
 
 class TransfermarktId(Parser):
-    def parse(self, soup: BeautifulSoup) -> pl.Series:
+    def parse(self, soup: BeautifulSoup) -> pl.DataFrame:
         links = soup.find_all("td", {"class": "hauptlink"})
         tm_id = [
             link.find("a")["href"].split("/")[4] if link.find("a") else None
             for link in links[::2]
         ]
-        return pl.Series(tm_id, name="tm_id")
+        return pl.DataFrame({"tm_id": tm_id})

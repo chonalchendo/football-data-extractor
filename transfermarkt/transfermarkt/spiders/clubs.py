@@ -13,8 +13,6 @@ class ClubsSpider(scrapy.Spider):
 
     def __init__(self, leagues=None, seasons=None, *args, **kwargs):
         super(ClubsSpider, self).__init__(*args, **kwargs)
-        # self.leagues = leagues.split(", ") if leagues else []
-        # self.seasons = seasons.split(", ") if seasons else []
         match leagues:
             case "all":
                 self.leagues = list(league_map.keys())
@@ -61,22 +59,6 @@ class ClubsSpider(scrapy.Spider):
         Start the requests for the given leagues and seasons.
         @returns request 1
         """
-        # match self.leagues:
-        #     case 'all':
-        #         self.leagues = list(league_map.keys())
-        #     case self.leagues if len(self.leagues) == 0:
-        #         raise ValueError("No leagues provided")
-        #     case _:
-        #         pass
-        #
-        # match self.seasons:
-        #     case 'all':
-        #         self.seasons = [str(i) for i in range(2018, 2024)]
-        #     case self.seasons if len(self.seasons) == 0:
-        #         raise ValueError("No seasons provided")
-        #     case _:
-        #         pass
-
         for season in self.seasons:
             for league in self.leagues:
 

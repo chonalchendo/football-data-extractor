@@ -5,7 +5,7 @@ from ..base import Parser
 
 
 class SigningInfo(Parser):
-    def parse(self, soup: BeautifulSoup) -> pl.Series:
+    def parse(self, soup: BeautifulSoup) -> pl.DataFrame:
         stats = soup.find_all("td", {"class": "zentriert"})
         signing_info = [stat for stat in stats[7::8]]
 

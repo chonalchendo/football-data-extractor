@@ -1,10 +1,9 @@
 from typing import Iterator
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import urlparse
 
 import polars as pl
 import scrapy
 from bs4 import BeautifulSoup
-from rich import print
 from scrapy.http import Response
 
 from ..parsers.squads import squad_parsers
@@ -23,10 +22,12 @@ class SquadsSpider(scrapy.Spider):
     def parse(self, response: Response) -> Iterator[dict]:
         soup = self.soupify(response)
 
+        # concatenate parsers together
         data = pl.concat(
             [parser.parse(soup) for parser in self.parsers], how="horizontal"
         )
 
+        # add season and squads to data
         url = response.url
         squad = urlparse(url).path.split("/")[1]
         season = urlparse(url).path.split("/")[6]
@@ -36,7 +37,9 @@ class SquadsSpider(scrapy.Spider):
             pl.Series("squad", [squad] * len(data)),
         )
 
-        yield data.to_dict(as_series=False)
+        for record in data.to_dicts():
+            yield record
+
 
     def soupify(self, response: Response) -> BeautifulSoup:
         soup = BeautifulSoup(response.text, "html.parser")

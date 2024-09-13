@@ -20,6 +20,13 @@ class SquadsSpider(scrapy.Spider):
         self.parsers = squad_parsers
 
     def parse(self, response: Response) -> Iterator[dict]:
+        """
+        Parse the response and yield a dictionary with the squad data.
+
+        @url https://transfermarkt.co.uk/arsenal-fc/kader/verein/11/saison_id/2020/plus/1
+        @returns items 1
+        @scrapes dob age country current_club foot height joined_date name number position signed_from signing_fee tm_id tm_name value season squad
+        """
         soup = self.soupify(response)
 
         # concatenate parsers together
@@ -42,10 +49,17 @@ class SquadsSpider(scrapy.Spider):
 
 
     def soupify(self, response: Response) -> BeautifulSoup:
+        """
+        Convert the response to a BeautifulSoup object.
+        """
         soup = BeautifulSoup(response.text, "html.parser")
         return soup
 
     def start_requests(self) -> Iterator[scrapy.Request]:
+        """
+        Starts the request for the given squads and seasons.
+        @return request 1
+        """
 
         path = "data/clubs.json.gz"
         clubs = pl.read_ndjson(path).to_dicts()

@@ -47,7 +47,6 @@ class SquadsSpider(scrapy.Spider):
         for record in data.to_dicts():
             yield record
 
-
     def soupify(self, response: Response) -> BeautifulSoup:
         """
         Convert the response to a BeautifulSoup object.

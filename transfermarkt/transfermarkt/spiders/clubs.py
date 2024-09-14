@@ -1,5 +1,5 @@
-from urllib.parse import parse_qs, urlparse
 from typing import Iterator
+from urllib.parse import parse_qs, urlparse
 
 import scrapy
 from bs4 import BeautifulSoup

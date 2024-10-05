@@ -16,7 +16,8 @@ class SquadsSpider(scrapy.Spider):
         "https://transfermarkt.co.uk/{squad}/kader/verein/{id}/saison_id/{year}/plus/1"
     )
 
-    def __init__(self) -> None:
+    def __init__(self, season=None) -> None:
+        self.season = season
         self.parsers = squad_parsers
 
     def parse(self, response: Response) -> Iterator[dict]:
@@ -61,9 +62,18 @@ class SquadsSpider(scrapy.Spider):
         """
 
         path = "data/clubs.json.gz"
-        clubs = pl.read_ndjson(path).to_dicts()
+        clubs = pl.read_ndjson(path)
 
-        for row in clubs:
+        # filter based on the season
+        match self.season:
+            case "all":
+                pass
+            case None:
+                raise ValueError("No season provided")
+            case _:
+                clubs = clubs.filter(pl.col("season") == str(self.season))
+
+        for row in clubs.to_dicts():
             for team, id in zip(row["team_name"], row["team_id"]):
                 url = self.url.format(squad=team, id=id, year=row["season"])
                 yield scrapy.Request(

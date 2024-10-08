@@ -62,7 +62,7 @@ class SquadsSpider(scrapy.Spider):
         """
 
         path = "data/clubs.json.gz"
-        clubs = pl.read_ndjson(path)
+        clubs = pl.read_ndjson(path).sort("season")
 
         # filter based on the season
         match self.season:

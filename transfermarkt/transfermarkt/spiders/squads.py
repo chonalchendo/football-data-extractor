@@ -3,10 +3,13 @@ from urllib.parse import urlparse
 
 import polars as pl
 import scrapy
+from scrapy.exceptions import CloseSpider
+from pydantic import ValidationError
 from bs4 import BeautifulSoup
 from scrapy.http import Response
 
 from ..parsers.squads import squad_parsers
+from ..schemas import Player
 
 
 class SquadsSpider(scrapy.Spider):
@@ -38,7 +41,7 @@ class SquadsSpider(scrapy.Spider):
         # add season and squads to data
         url = response.url
         squad = urlparse(url).path.split("/")[1]
-        season = urlparse(url).path.split("/")[6]
+        season = int(urlparse(url).path.split("/")[6])
 
         data = data.with_columns(
             pl.Series("season", [season] * len(data)),
@@ -46,7 +49,13 @@ class SquadsSpider(scrapy.Spider):
         )
 
         for record in data.to_dicts():
-            yield record
+            try:
+                player = Player(**record)
+                yield player.model_dump()
+            except ValidationError as e: # Pydantic error handling 
+                msg = f"Error parsing player: {record['name']}. Validation error: {e}"
+                self.logger.error(msg)
+                raise CloseSpider(msg)
 
     def soupify(self, response: Response) -> BeautifulSoup:
         """

@@ -3,9 +3,9 @@ from urllib.parse import urlparse
 
 import polars as pl
 import scrapy
-from scrapy.exceptions import CloseSpider
-from pydantic import ValidationError
 from bs4 import BeautifulSoup
+from pydantic import ValidationError
+from scrapy.exceptions import CloseSpider
 from scrapy.http import Response
 
 from ..parsers.squads import squad_parsers
@@ -52,7 +52,7 @@ class SquadsSpider(scrapy.Spider):
             try:
                 player = Player(**record)
                 yield player.model_dump()
-            except ValidationError as e: # Pydantic error handling 
+            except ValidationError as e:  # Pydantic error handling
                 msg = f"Error parsing player: {record['name']}. Validation error: {e}"
                 self.logger.error(msg)
                 raise CloseSpider(msg)

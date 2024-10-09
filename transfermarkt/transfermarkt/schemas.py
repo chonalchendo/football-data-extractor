@@ -17,6 +17,5 @@ class Player(BaseModel):
     tm_id: str
     tm_name: str
     foot: str
-    season: int 
+    season: int
     squad: str
-

@@ -17,11 +17,15 @@ beautifulsoup4 = "^4.12.3"
 polars = "^1.6.0"
 rich = "^13.8.1"
 pydantic = "^2.9.2"
+pandas = "^2.2.3"
+httpx = "^0.27.2"
+pyarrow = "^17.0.0"
 
 
 [tool.poetry.group.dev.dependencies]
 isort = "^5.13.2"
 black = "^24.8.0"
+ipykernel = "^6.29.5"
 
 [build-system]
 requires = ["poetry-core"]

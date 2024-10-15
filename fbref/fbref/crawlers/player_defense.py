@@ -5,6 +5,9 @@ from typing import Iterator
 from .base import BasePlayerCrawler
 
 from ..cleaners.common import common_cleaners
+from ..cleaners.defense import defense_cleaners 
+from ..schemas import DefenseStats
+
 
 class PlayerDefense(BasePlayerCrawler):
     def __init__(self, season: str | None = None) -> None:
@@ -14,7 +17,7 @@ class PlayerDefense(BasePlayerCrawler):
             stat="defense",
             table="defense",
         )
-        self.cleaners = common_cleaners
+        self.cleaners = common_cleaners + defense_cleaners
 
         print('PlayerDefense initialized.')
 
@@ -31,7 +34,8 @@ class PlayerDefense(BasePlayerCrawler):
         print(data3)
 
         for record in data3.to_dicts():
-            yield record
+            valid_record = DefenseStats(**record)
+            yield valid_record.model_dump()
 
 if __name__ == "__main__":
     print("Crawling player defense data...")

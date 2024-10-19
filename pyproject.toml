@@ -7,6 +7,7 @@ license = "MIT"
 readme = "README.md"
 packages = [
     { include = "transfermarkt/transfermarkt" },
+    { include = "fbref/fbref"}
 ]
 
 [tool.poetry.dependencies]
@@ -30,3 +31,4 @@ ipykernel = "^6.29.5"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+

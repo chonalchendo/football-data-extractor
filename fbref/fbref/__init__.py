@@ -1,4 +1,4 @@
-from .nagviator import NavigatorRunner
+from .navigator import NavigatorRunner
 from .settings import Settings
 
 

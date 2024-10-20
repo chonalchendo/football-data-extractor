@@ -6,3 +6,4 @@ logs/
 notebooks/
 fbref/data/
 transfermarkt/data/
+fbref/fbref/test.py

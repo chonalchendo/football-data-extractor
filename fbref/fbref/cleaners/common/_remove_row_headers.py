@@ -10,9 +10,5 @@ def remove_row_headers(df: pl.DataFrame) -> pl.DataFrame:
 
     Returns:
         pl.DataFrame: The DataFrame without the row headers.
-    """ 
+    """
     return df.filter((pl.arange(0, df.height) - 25) % 26 != 0)
-
-
-
-

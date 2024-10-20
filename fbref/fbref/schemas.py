@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 
 class DefenseStats(BaseModel):
-    rk: str 
+    rk: str
     player: str
     nation: str | None
     squad: str
@@ -13,10 +13,10 @@ class DefenseStats(BaseModel):
     ninety_mins_played: str
     tackles: str
     tackles_won: str
-    def_third_tackles: str 
-    mid_third_tackles: str 
-    att_third_tackles: str 
-    dribblers_tackled: str 
+    def_third_tackles: str
+    mid_third_tackles: str
+    att_third_tackles: str
+    dribblers_tackled: str
     dribblers_challenged: str
     tackle_pct: str | None
     challenges_lost: str

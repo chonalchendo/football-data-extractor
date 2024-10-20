@@ -9,4 +9,3 @@ class Settings:
 
     def set(self, key: str, value: str) -> None:
         setattr(self, key, value)
-    

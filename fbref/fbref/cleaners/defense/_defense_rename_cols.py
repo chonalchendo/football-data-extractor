@@ -1,5 +1,6 @@
 import polars as pl
 
+
 def defense_rename_cols(df: pl.DataFrame) -> pl.DataFrame:
     """Renames defensive stats columns
 

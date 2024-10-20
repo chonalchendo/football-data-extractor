@@ -1,5 +1,6 @@
 import polars as pl
 
+
 def trim_nation_column(df: pl.DataFrame) -> pl.DataFrame:
     """Trim the nation column to only include the nation name.
 
@@ -9,6 +10,4 @@ def trim_nation_column(df: pl.DataFrame) -> pl.DataFrame:
     Returns:
         pl.DataFrame: fbref dataframe with cleaned nation column
     """
-    return df.with_columns(
-        pl.col("nation").str.split(" ").list.get(-1)
-    )
+    return df.with_columns(pl.col("nation").str.split(" ").list.get(-1))

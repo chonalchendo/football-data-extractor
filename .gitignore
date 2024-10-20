@@ -1,5 +1,8 @@
-fbref/
 
 __pycache__/
 *.py[cod]
 *$py.class
+logs/
+notebooks/
+fbref/data/
+transfermarkt/data/

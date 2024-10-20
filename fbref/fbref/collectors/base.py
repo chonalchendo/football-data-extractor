@@ -1,8 +1,12 @@
+from abc import ABC, abstractmethod
+from typing import Iterator
+
 import pandas as pd
 import polars as pl
 
-from typing import Iterator
-from abc import ABC, abstractmethod
+from utils.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class BasePlayerCollector(ABC):
@@ -22,12 +26,13 @@ class BasePlayerCollector(ABC):
         pass
 
     def parse(self) -> pl.DataFrame:
-        params = {
-            'season': self.season,
-            'stat': self.stat,
-            'table': self.table
-        }
+
+        season = f"{self.season}-{str(int(self.season) + 1)}"
+        logger.info(f"Collecting data for {season}")
+
+        params = {"season": season, "stat": self.stat, "table": self.table}
         url = self.url.format(**params)
+
+        logger.info(f"Collecting data from {url}")
         df_pandas = pd.read_html(url, skiprows=1, header=0)[0]
         return pl.from_pandas(df_pandas)
-

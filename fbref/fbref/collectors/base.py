@@ -42,6 +42,8 @@ class BasePlayerCollector:
             logger.error(f"No data found for {self.stat} in {self.season}")
             raise ValueError
 
+        print(data3.columns)
+
         for record in data3.to_dicts():
             valid_record = self.validator(**record)
             yield valid_record.model_dump()       

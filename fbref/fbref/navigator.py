@@ -4,6 +4,7 @@ import json
 from gzip import GzipFile
 from pathlib import Path
 from typing import TextIO
+
 from rich import print
 
 from .collectors.base import BasePlayerCollector
@@ -120,13 +121,3 @@ class NavigatorRunner:
         self._file = gzip.open(self._output_path, "at")
         self._file.write(json.dumps(record))
         self._file.write("\n")
-
-
-if __name__ == "__main__":
-    settings = Settings()
-    settings.setdict(
-        {"FEEDS": {"path": "fbref/data/{season}/{name}.json.gz", "overwrite": True}}
-    )
-    runner = NavigatorRunner(settings)
-    runner.navigate("player_defense", season="2021")
-    runner.start()

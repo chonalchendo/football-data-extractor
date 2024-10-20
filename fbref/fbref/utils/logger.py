@@ -7,21 +7,24 @@ from rich.logging import RichHandler
 from rich.theme import Theme
 
 # Custom theme for Rich
-custom_theme = Theme({
-    "info": "cyan",
-    "warning": "yellow",
-    "error": "bold red",
-    "critical": "bold white on red",
-})
+custom_theme = Theme(
+    {
+        "info": "cyan",
+        "warning": "yellow",
+        "error": "bold red",
+        "critical": "bold white on red",
+    }
+)
 
 console = Console(color_system="256", width=150, theme=custom_theme)
+
 
 @lru_cache
 def get_logger(
     module_name: str,
     level: int = logging.INFO,
     log_file: Optional[str] = "logs/app.log",
-    format_string: Optional[str] = None
+    format_string: Optional[str] = None,
 ) -> logging.Logger:
     """Get a customized logger for the module.
 
@@ -66,6 +69,7 @@ def get_logger(
         logger.addHandler(file_handler)
 
     return logger
+
 
 # # Example usage
 # if __name__ == "__main__":

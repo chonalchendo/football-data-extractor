@@ -4,6 +4,7 @@ import json
 from gzip import GzipFile
 from pathlib import Path
 from typing import TextIO
+from rich import print
 
 from .collectors.base import BasePlayerCollector
 from .settings import Settings
@@ -22,7 +23,7 @@ class NavigatorRunner:
     def __init__(self, settings: Settings) -> None:
         self.settings = settings
         self._collector: str | None = None
-        self._collector_class: BasePlayerCollector | None = None
+        self._collector_instance: BasePlayerCollector | None = None
         self._file: GzipFile | TextIO | None = None
         self._output_path: str | None = None
         self._season: str | None = None
@@ -51,27 +52,18 @@ class NavigatorRunner:
             logger.info(f"Navigator is navigating to {collector}")
             module = importlib.import_module(f"fbref.fbref.collectors.{collector}")
 
-            classes = [
+            collectors = [
                 obj
                 for _, obj in module.__dict__.items()
-                if isinstance(obj, type)
-                and issubclass(obj, BasePlayerCollector)
-                and obj is not BasePlayerCollector
+                if isinstance(obj, BasePlayerCollector)
             ]
 
-            if len(classes) != 1:
+            if len(collectors) != 1:
                 logger.error(f"Module {module} should contain exactly one class")
                 raise ValueError
 
-            collector_class = classes[0]
-
-            if not issubclass(collector_class, BasePlayerCollector):
-                logger.error(
-                    f"Class {collector_class} should be a subclass of Navigator"
-                )
-                raise ValueError
-
-            self._collector_class = collector_class(*args, **kwargs)
+            self._collector_instance = collectors[0]
+            self._collector_instance.season = self._season
 
         except ModuleNotFoundError:
             logger.exception(f"Module {collector} not found")
@@ -105,7 +97,8 @@ class NavigatorRunner:
                 pass
 
         try:
-            for record in self._collector_class.collect():
+            for record in self._collector_instance.collect():
+                print(record)
                 self._write_to_file(record)
         except Exception as e:
             logger.exception(f"An error occurred: {e}")

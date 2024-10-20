@@ -1,5 +1,6 @@
 import logging
 from functools import lru_cache
+from pathlib import Path
 from typing import Optional
 
 from rich.console import Console
@@ -64,6 +65,9 @@ def get_logger(
 
     # Add file handler if log_file is specified
     if log_file:
+        if not Path(log_file).parent.exists():
+            Path(log_file).parent.mkdir(parents=True, exist_ok=True)
+
         file_handler = logging.FileHandler(log_file)
         file_handler.setFormatter(logging.Formatter(format_string))
         logger.addHandler(file_handler)

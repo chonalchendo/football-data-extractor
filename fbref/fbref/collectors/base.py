@@ -4,7 +4,7 @@ from typing import Iterator
 import pandas as pd
 import polars as pl
 
-from utils.logger import get_logger
+from ..utils.logger import get_logger
 
 logger = get_logger(__name__)
 

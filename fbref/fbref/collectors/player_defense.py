@@ -3,11 +3,10 @@ from typing import Iterator
 
 import polars as pl
 
-from utils.logger import get_logger
-
 from ..cleaners.common import common_cleaners
 from ..cleaners.defense import defense_cleaners
 from ..schemas import DefenseStats
+from ..utils.logger import get_logger
 from .base import BasePlayerCollector
 
 logger = get_logger(__name__)

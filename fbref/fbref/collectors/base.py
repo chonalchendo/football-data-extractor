@@ -1,11 +1,10 @@
 from collections.abc import Sequence
-from typing import Iterator, Callable, TypeAlias 
 from functools import reduce
+from typing import Callable, Iterator, TypeAlias
 
 import pandas as pd
 import polars as pl
-
-from pydantic import BaseModel 
+from pydantic import BaseModel
 
 from ..utils.logger import get_logger
 
@@ -18,8 +17,8 @@ DataFrameTransform: TypeAlias = Callable[[pl.DataFrame], pl.DataFrame]
 class BasePlayerCollector:
     def __init__(
         self,
-        stat: str, 
-        table: str, 
+        stat: str,
+        table: str,
         validator: BaseModel,
         season: str | None = None,
         cleaners: Sequence[DataFrameTransform] = (),
@@ -46,8 +45,7 @@ class BasePlayerCollector:
 
         for record in data3.to_dicts():
             valid_record = self.validator(**record)
-            yield valid_record.model_dump()       
-
+            yield valid_record.model_dump()
 
     def parse(self) -> pl.DataFrame:
 
@@ -60,4 +58,3 @@ class BasePlayerCollector:
         logger.info(f"Collecting data from {url}")
         df_pandas = pd.read_html(url, skiprows=1, header=0)[0]
         return pl.from_pandas(df_pandas)
-

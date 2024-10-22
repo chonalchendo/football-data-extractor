@@ -7,6 +7,7 @@ class DefenseStats(BaseModel):
     nation: str | None
     squad: str
     comp: str
+    season: str
     age: str
     born: str
     position: str

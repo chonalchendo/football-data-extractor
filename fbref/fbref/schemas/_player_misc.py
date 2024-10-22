@@ -4,10 +4,11 @@ from pydantic import BaseModel
 class MiscStats(BaseModel):
     rk: str
     player: str
-    nation: str
+    nation: str | None
     pos: str
     squad: str
     comp: str
+    season: str
     age: str
     born: str
     ninety_mins_played: str
@@ -26,4 +27,4 @@ class MiscStats(BaseModel):
     ball_recoveries: str
     aerials_won: str
     aerials_lost: str
-    aerials_won_pct: str
+    aerials_won_pct: str | None

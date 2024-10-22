@@ -4,27 +4,28 @@ from pydantic import BaseModel
 class PassingStats(BaseModel):
     rk: str
     player: str
-    nation: str
+    nation: str | None
     pos: str
     squad: str
     comp: str
+    season: str
     age: str
     born: str
     ninety_mins_played: str
     passes_completed: str
     passes_attempted: str
-    pass_completion_pct: str
+    pass_completion_pct: str | None
     total_pass_distance: str
     progressive_pass_distance: str
     short_passes_completed: str
     short_passes_attempted: str
-    short_pass_completion_pct: str
+    short_pass_completion_pct: str | None
     medium_passes_completed: str
     medium_passes_attempted: str
-    medium_pass_completion_pct: str
+    medium_pass_completion_pct: str | None
     long_passes_completed: str
     long_passes_attempted: str
-    long_pass_completion_pct: str
+    long_pass_completion_pct: str | None
     assists: str
     xag: str
     xa: str

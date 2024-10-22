@@ -8,6 +8,7 @@ class GcaStats(BaseModel):
     pos: str
     squad: str
     comp: str
+    season: str
     age: str
     born: str
     ninety_mins_played: str

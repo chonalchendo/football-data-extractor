@@ -8,6 +8,7 @@ class KeeperStats(BaseModel):
     pos: str
     squad: str
     comp: str
+    season: str
     age: str
     born: str
     mp: str

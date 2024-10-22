@@ -4,10 +4,11 @@ from pydantic import BaseModel
 class StandardStats(BaseModel):
     rk: str
     player: str
-    nation: str
+    nation: str | None
     pos: str
     squad: str
     comp: str
+    season: str
     age: str
     born: str
     mp: str

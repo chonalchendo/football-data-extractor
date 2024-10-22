@@ -4,10 +4,11 @@ from pydantic import BaseModel
 class PassingTypeStats(BaseModel):
     rk: str
     player: str
-    nation: str
+    nation: str | None
     pos: str
     squad: str
     comp: str
+    season: str
     age: str
     born: str
     ninety_mins_played: str
@@ -26,4 +27,3 @@ class PassingTypeStats(BaseModel):
     passes_completed: str
     passes_offside: str
     passes_blocked: str
-    match: strs

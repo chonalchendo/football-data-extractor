@@ -4,10 +4,11 @@ from pydantic import BaseModel
 class PossessionStats(BaseModel):
     rk: str
     player: str
-    nation: str
+    nation: str | None
     pos: str
     squad: str
     comp: str
+    season: str
     age: str
     born: str
     ninety_mins_played: str
@@ -20,9 +21,9 @@ class PossessionStats(BaseModel):
     live_ball_touches: str
     take_ons_attempted: str
     take_ons_successful: str
-    take_on_succ_pct: str
+    take_on_succ_pct: str | None
     take_ons_tackled: str
-    take_on_tackled_pct: str
+    take_on_tackled_pct: str | None
     carries: str
     total_distance_carried: str
     progressive_carries_distance: str

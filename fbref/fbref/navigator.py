@@ -1,8 +1,5 @@
-import gzip
 import importlib
-import json
 from gzip import GzipFile
-from pathlib import Path
 from typing import TextIO
 
 from rich import print
@@ -10,6 +7,7 @@ from rich import print
 from .collectors.base import BasePlayerCollector
 from .settings import Settings
 from .utils.logger import get_logger
+from .feeds import NdjsonFeedWriter 
 
 logger = get_logger(__name__)
 
@@ -25,6 +23,7 @@ class NavigatorRunner:
         self.settings = settings
         self._collector: str | None = None
         self._collector_instance: BasePlayerCollector | None = None
+        self._feeds = NdjsonFeedWriter 
         self._file: GzipFile | TextIO | None = None
         self._output_path: str | None = None
         self._season: str | None = None
@@ -88,36 +87,19 @@ class NavigatorRunner:
             season=self._season, name=self._collector
         )
 
-        if not Path(self._output_path).parent.exists():
-            logger.info(f"Creating directory {Path(self._output_path).parent}")
-            Path(self._output_path).parent.mkdir(parents=True, exist_ok=True)
-
-        if feeds["overwrite"]:
-            logger.info(f"Overwriting file {self._output_path}")
-            with gzip.open(self._output_path, "wb") as f:
-                pass
+        self._feeds = NdjsonFeedWriter(
+            output_path=self._output_path, 
+            overwrite=feeds["overwrite"]
+        )
 
         try:
             for record in self._collector_instance.collect():
                 print(record)
-                self._write_to_file(record)
+                self._feeds.write(record)
         except Exception as e:
             logger.exception(f"An error occurred: {e}")
             raise e
         finally:
-            if self._file:
-                logger.info(f"Closing file {self._output_path}")
-                self._file.close()
-
+            self._feeds.close()
         logger.info("Navigator has finished")
 
-    def _write_to_file(self, record: dict) -> None:
-        """
-        Write the record to the file.
-
-        Args:
-            record (dict): The record to write to the file.
-        """
-        self._file = gzip.open(self._output_path, "at")
-        self._file.write(json.dumps(record))
-        self._file.write("\n")

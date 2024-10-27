@@ -8,7 +8,7 @@ class DefenseStats(BaseModel):
     squad: str
     comp: str
     season: str
-    age: str
+    age: str | None
     born: str | None
     position: str
     ninety_mins_played: str

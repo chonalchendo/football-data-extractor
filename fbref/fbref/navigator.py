@@ -5,9 +5,9 @@ from typing import TextIO
 from rich import print
 
 from .collectors.base import BasePlayerCollector
+from .feeds import NdjsonFeedWriter
 from .settings import Settings
 from .utils.logger import get_logger
-from .feeds import NdjsonFeedWriter 
 
 logger = get_logger(__name__)
 
@@ -23,7 +23,7 @@ class NavigatorRunner:
         self.settings = settings
         self._collector: str | None = None
         self._collector_instance: BasePlayerCollector | None = None
-        self._feeds = NdjsonFeedWriter 
+        self._feeds = NdjsonFeedWriter
         self._file: GzipFile | TextIO | None = None
         self._output_path: str | None = None
         self._season: str | None = None
@@ -88,9 +88,9 @@ class NavigatorRunner:
         )
 
         self._feeds = NdjsonFeedWriter(
-            output_path=self._output_path, 
+            output_path=self._output_path,
             overwrite=feeds["overwrite"],
-            format = feeds["format"]
+            format=feeds["format"],
         )
 
         try:
@@ -103,4 +103,3 @@ class NavigatorRunner:
         finally:
             self._feeds.close()
         logger.info("Navigator has finished")
-

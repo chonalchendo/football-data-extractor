@@ -89,7 +89,8 @@ class NavigatorRunner:
 
         self._feeds = NdjsonFeedWriter(
             output_path=self._output_path, 
-            overwrite=feeds["overwrite"]
+            overwrite=feeds["overwrite"],
+            format = feeds["format"]
         )
 
         try:

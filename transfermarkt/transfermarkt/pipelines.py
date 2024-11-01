@@ -1,13 +1,16 @@
-# Define your item pipelines here
-#
-# Don't forget to add your pipeline to the ITEM_PIPELINES setting
-# See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
+import polars as pl
 
+class TransfermarktPolarsPipeline:
+    def __init__(self) -> None:
+        self.data = []
 
-# useful for handling different item types with a single interface
-from itemadapter import ItemAdapter
-
-
-class TransfermarktPipeline:
     def process_item(self, item, spider):
+        self.data.append(item)
         return item
+
+    def close_spider(self, spider) -> pl.DataFrame:
+        df = pl.DataFrame(self.data)
+        return df 
+
+
+    

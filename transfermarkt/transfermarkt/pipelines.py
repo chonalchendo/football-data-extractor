@@ -21,8 +21,8 @@ class TransfermarktPolarsPipeline:
 class TransfermarktGCSPipeline:
     def __init__(self, gcp_project_name: str, credentials_path: str) -> None:
         self.data: list[dict[str, Any]] = []
-        self.gcp_project_name: str = (gcp_project_name,)
-        self.credentials_path: str = (credentials_path,)
+        self.gcp_project_name: str = gcp_project_name
+        self.credentials_path: str = credentials_path
 
     @classmethod
     def from_crawler(cls, crawler: Crawler) -> "TransfermarktGCSPipeline":

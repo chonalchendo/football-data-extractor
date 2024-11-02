@@ -31,7 +31,7 @@ class TransfermarktGCSPipeline:
         This method is called by Scrapy when creating the pipeline.
         """
         return cls(
-            gcp_project=crawler.settings.get("GCP_PROJECT"),
+            gcp_project_name=crawler.settings.get("GCP_PROJECT"),
             credentials_path=crawler.settings.get("GCP_CREDENTIALS_PATH"),
         )
 

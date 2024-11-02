@@ -38,7 +38,7 @@ class TransfermarktGCSPipeline:
     def open_spider(self, spider: Spider) -> None:
         self.fs = gcsfs.GCSFileSystem(
             project=self.gcp_project_name,
-            taken=self.credentials_path,
+            token=self.credentials_path,
         )
 
     def process_item(self, item: dict[str, Any], spider: Spider) -> None:

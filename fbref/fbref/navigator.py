@@ -1,12 +1,9 @@
 import importlib
-from gzip import GzipFile
-from typing import TextIO
 
 from rich import print
 
 from .collectors.base import BasePlayerCollector
-from .feeds import NdjsonFeedWriter
-from .settings import Settings
+from .feeds import Feed
 from .utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -19,13 +16,12 @@ class NavigatorRunner:
     desired collector, starting the collection process, and writing the data to a file.
     """
 
-    def __init__(self, settings: Settings) -> None:
-        self.settings = settings
+    def __init__(self, feed: Feed) -> None:
+        # self.settings = settings
+        self.feed = feed
         self._collector: str | None = None
         self._collector_instance: BasePlayerCollector | None = None
-        self._feeds = NdjsonFeedWriter
-        self._file: GzipFile | TextIO | None = None
-        self._output_path: str | None = None
+        # self._output_path: str | None = None
         self._season: str | None = None
 
     def navigate(self, collector: str, *args, **kwargs) -> None:
@@ -81,25 +77,29 @@ class NavigatorRunner:
             logger.error("You should call navigate method first")
             raise ValueError
 
-        feeds = self.settings.FEEDS
+        # feeds = self.settings.FEEDS
 
-        self._output_path = feeds["path"].format(
+        # self._output_path = feeds["path"].format(
+        #     season=self._season, name=self._collector
+        # )
+
+        # self._feeds = ParquetFeedWriter(
+        #     output_path=self._output_path,
+        #     overwrite=feeds["overwrite"],
+        #     format=feeds["format"],
+        # )
+
+        self.feed.output_path = self.feed.output_path.format(
             season=self._season, name=self._collector
-        )
-
-        self._feeds = NdjsonFeedWriter(
-            output_path=self._output_path,
-            overwrite=feeds["overwrite"],
-            format=feeds["format"],
         )
 
         try:
             for record in self._collector_instance.collect():
                 print(record)
-                self._feeds.write(record)
+                self.feed.write(record)
         except Exception as e:
             logger.exception(f"An error occurred: {e}")
             raise e
         finally:
-            self._feeds.close()
+            self.feed.close()
         logger.info("Navigator has finished")

@@ -52,7 +52,9 @@ class TransfermarktGCSPipeline:
             else ValueError("DataFrame is Empty")
         )
 
-        feeds = list(spider.settings.getdict("FEEDS").keys())[0]
+        feeds: str = list(spider.settings.getdict("FEEDS").keys())[0]
+        formatted_feeds = feeds.format(season=spider.season, name=spider.name)
 
-        with self.fs.open(feeds, mode="wb") as f:
+        with self.fs.open(formatted_feeds, mode="wb") as f:
             data.write_parquet(f, use_pyarrow=True)
+

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from pathlib import Path
+from typing import Any
 
 import gcsfs
 import polars as pl
@@ -16,8 +16,8 @@ class Feed(ABC):
         self.items: list[dict] = []
 
     @abstractmethod
-    def write(self, item: dict) -> None:
-        self.items.append(item)
+    def write(self, item: dict[str, Any]) -> None:
+        pass
 
     @abstractmethod
     def close(self) -> None:
@@ -32,19 +32,27 @@ class GcsFeed(Feed):
         self.gcs_project_name = gcs_project_name
         self.gcs_credentials = gcs_credentials
         self.fs = gcsfs.GCSFileSystem(
-            project=self.gcs_project_name,
-            token=self.gcs_credentials
+            project=self.gcs_project_name, token=self.gcs_credentials
         )
+
+    def write(self, item: dict) -> None:
+        self.items.append(item)
 
     def close(self) -> None:
-        data = (
-            pl.DataFrame(self.items)
-            if (len(self.items) > 0)
-            else ValueError("DataFrame is Empty")
-        )
+        if not self.items:
+            logger.error("No items to write - DataFrame would be empty")
 
-        with self.fs.open(self.output_path, mode="wb") as f:
-            data.write_parquet(f, use_pyarrow=True)
+        try:
+            data = pl.DataFrame(self.items)
+
+            with self.fs.open(self.output_path, mode="wb") as f:
+                data.write_parquet(f, use_pyarrow=True)
+                logger.info(
+                    f"Successfully wrote {len(self.items)} items to {self.output_path}"
+                )
+        except Exception as e:
+            logger.error(f"Failed to write data to {self.output_path}: {str(e)}")
+            raise
 
 
 # class ParquetFeedWriter:

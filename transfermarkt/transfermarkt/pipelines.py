@@ -6,19 +6,6 @@ from scrapy import Spider
 from scrapy.crawler import Crawler
 
 
-class TransfermarktPolarsPipeline:
-    def __init__(self) -> None:
-        self.data = []
-
-    def process_item(self, item, spider):
-        self.data.append(item)
-        return item
-
-    def close_spider(self, spider) -> pl.DataFrame:
-        df = pl.DataFrame(self.data)
-        return df
-
-
 class TransfermarktGCSPipeline:
     def __init__(self, gcp_project_name: str, credentials_path: str) -> None:
         self.data: list[dict[str, Any]] = []

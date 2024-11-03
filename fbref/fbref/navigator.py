@@ -35,7 +35,7 @@ class NavigatorRunner:
 
         """
 
-        logger.info(f"Navigator is running with {self.settings}")
+        logger.info("Navigator is initiated")
 
         self._collector = collector
 

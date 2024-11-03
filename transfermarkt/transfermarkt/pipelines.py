@@ -1,6 +1,7 @@
 from typing import Any
-import polars as pl
+
 import gcsfs
+import polars as pl
 from scrapy import Spider
 from scrapy.crawler import Crawler
 
@@ -57,4 +58,3 @@ class TransfermarktGCSPipeline:
 
         with self.fs.open(formatted_feeds, mode="wb") as f:
             data.write_parquet(f, use_pyarrow=True)
-

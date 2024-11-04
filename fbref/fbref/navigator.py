@@ -1,4 +1,5 @@
 import importlib
+import time
 
 from rich import print
 
@@ -16,12 +17,11 @@ class NavigatorRunner:
     desired collector, starting the collection process, and writing the data to a file.
     """
 
-    def __init__(self, feed: Feed) -> None:
-        # self.settings = settings
+    def __init__(self, feed: Feed, download_delay: int | None = None) -> None:
         self.feed = feed
+        self.download_deplay = download_delay
         self._collector: str | None = None
         self._collector_instance: BasePlayerCollector | None = None
-        # self._output_path: str | None = None
         self._season: str | None = None
 
     def navigate(self, collector: str, *args, **kwargs) -> None:
@@ -77,21 +77,12 @@ class NavigatorRunner:
             logger.error("You should call navigate method first")
             raise ValueError
 
-        # feeds = self.settings.FEEDS
-
-        # self._output_path = feeds["path"].format(
-        #     season=self._season, name=self._collector
-        # )
-
-        # self._feeds = ParquetFeedWriter(
-        #     output_path=self._output_path,
-        #     overwrite=feeds["overwrite"],
-        #     format=feeds["format"],
-        # )
-
         self.feed.output_path = self.feed.output_path.format(
             season=self._season, name=self._collector
         )
+        
+        if self.download_deplay is not None:
+            time.sleep(self.download_deplay)
 
         try:
             for record in self._collector_instance.collect():

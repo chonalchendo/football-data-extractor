@@ -48,7 +48,7 @@ class TransfermarktGCSPipeline:
 
 
 class TransfermarktParquetPipeline:
-    def __init__(self, path: str) -> None:
+    def __init__(self) -> None:
         self.data: list[dict[str, Any]] = []
 
     def process_item(self, item: dict[str, Any], spider: Spider) -> None:

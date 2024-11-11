@@ -40,8 +40,27 @@ class TransfermarktGCSPipeline:
             else ValueError("DataFrame is Empty")
         )
 
-        feeds: str = list(spider.settings.getdict("FEEDS").keys())[0]
+        feeds: str = list(spider.settings.getdict("GCS_FEEDS").keys())[0]
         formatted_feeds = feeds.format(season=spider.season, name=spider.name)
 
         with self.fs.open(formatted_feeds, mode="wb") as f:
             data.write_parquet(f, use_pyarrow=True)
+
+
+class TransfermarktParquetPipeline:
+    def __init__(self, path: str) -> None:
+        self.data: list[dict[str, Any]] = []
+    
+    def process_item(self, item: dict[str, Any], spider: Spider) -> None:
+        self.data.append(item)
+        return item
+
+    def close_spider(self, spider: Spider) -> None:
+        data = pl.DataFrame(self.data) if (len(self.data) > 0) else ValueError("DataFrame is Empty")
+
+        feeds: str = list(spider.settings.getdict("FEEDS").keys())[0]
+        formatted_feeds = feeds.format(season=spider.season, name=spider.name)
+
+        data.write_parquet(formatted_feeds, use_pyarrow=True)
+
+        

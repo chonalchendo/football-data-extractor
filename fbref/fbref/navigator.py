@@ -80,7 +80,7 @@ class NavigatorRunner:
         self.feed.output_path = self.feed.output_path.format(
             season=self._season, name=self._collector
         )
-        
+
         if self.download_deplay is not None:
             time.sleep(self.download_deplay)
 

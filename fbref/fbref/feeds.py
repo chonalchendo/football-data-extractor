@@ -54,6 +54,7 @@ class GcsFeed(Feed):
             logger.error(f"Failed to write data to {self.output_path}: {str(e)}")
             raise
 
+
 class ParquetFeed(Feed):
     def __init__(self, output_path: str, format: str) -> None:
         super().__init__(output_path, format)

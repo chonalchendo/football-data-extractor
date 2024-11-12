@@ -1,10 +1,10 @@
+from pathlib import Path
 from typing import Any
 
 import gcsfs
 import polars as pl
 from scrapy import Spider
 from scrapy.crawler import Crawler
-from pathlib import Path
 
 
 class TransfermarktGCSPipeline:

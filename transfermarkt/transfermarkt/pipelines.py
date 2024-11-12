@@ -69,4 +69,3 @@ class TransfermarktParquetPipeline:
         Path(formatted_feeds).parent.mkdir(parents=True, exist_ok=True)
 
         data.write_parquet(formatted_feeds, use_pyarrow=True)
-

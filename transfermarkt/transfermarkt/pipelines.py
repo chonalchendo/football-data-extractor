@@ -4,6 +4,7 @@ import gcsfs
 import polars as pl
 from scrapy import Spider
 from scrapy.crawler import Crawler
+from pathlib import Path
 
 
 class TransfermarktGCSPipeline:
@@ -64,5 +65,8 @@ class TransfermarktParquetPipeline:
 
         feeds: str = list(spider.settings.getdict("FEEDS").keys())[0]
         formatted_feeds = feeds.format(season=spider.season, name=spider.name)
+
+        if not Path(formatted_feeds).exists():
+            Path(formatted_feeds).mkdir(parents=True, exist_ok=True)
 
         data.write_parquet(formatted_feeds, use_pyarrow=True)

@@ -8,6 +8,6 @@ class WageStats(BaseModel):
     pos: str | None
     squad: str
     age: int
-    weekly_wages_euros: str
-    annual_wages_euros: str
+    weekly_wages: str
+    annual_wages: str
     season: int

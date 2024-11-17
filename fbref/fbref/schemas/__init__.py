@@ -9,6 +9,7 @@ from ._player_playing_time import PlayingTimeStats
 from ._player_possession import PossessionStats
 from ._player_shooting import ShootingStats
 from ._player_standard_stats import StandardStats
+from ._player_wages import WageStats
 
 __all__ = [
     "DefenseStats",
@@ -22,4 +23,5 @@ __all__ = [
     "PossessionStats",
     "ShootingStats",
     "StandardStats",
+    "WageStats",
 ]

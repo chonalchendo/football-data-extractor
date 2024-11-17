@@ -10,4 +10,4 @@ class WageStats(BaseModel):
     age: int
     weekly_wages_euros: str
     annual_wages_euros: str
-    season: str
+    season: int

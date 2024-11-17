@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Any
+from pathlib import Path
 
 import gcsfs
 import polars as pl
@@ -65,6 +66,8 @@ class ParquetFeed(Feed):
     def close(self) -> None:
         if not self.items:
             logger.error("No items to write - DataFrame would be empty")
+
+        Path(self.output_path).parent.mkdir(parents=True, exist_ok=True)
 
         try:
             data = pl.DataFrame(self.items)

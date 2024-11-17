@@ -54,7 +54,11 @@ class NavigatorRunner:
             raise ValueError
 
         try:
-            self._collector_instance = get_collector(collector=collector)(**params)
+            if params is not None:
+                self._collector_instance = get_collector(collector=collector)(**params)
+            else:
+                self._collector_instance = get_collector(collector=collector)()
+                
             self._collector_instance.season = self._season
 
         except ModuleNotFoundError:
@@ -72,9 +76,10 @@ class NavigatorRunner:
 
         output_name = self._collector
 
-        if "comp_name" in self._params.keys():
-            comp_name: str = self._params["comp_name"].replace("-", "_")
-            output_name = f"{self._collector}_{comp_name.lower()}"
+        if self._params is not None:
+            if "comp_name" in self._params.keys():
+                comp_name: str = self._params["comp_name"].replace("-", "_")
+                output_name = f"{self._collector}_{comp_name.lower()}"
 
         self.feed.output_path = self.feed.output_path.format(
             season=self._season, name=output_name

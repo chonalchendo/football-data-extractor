@@ -17,3 +17,5 @@ common_cleaners = [
 
 
 common_plus_xg_cleaners = common_cleaners + [clean_xg_difference_cols]
+
+wage_cleaners = [clean_column_names, trim_nation_column]

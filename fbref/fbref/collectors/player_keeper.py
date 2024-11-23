@@ -8,7 +8,7 @@ from ..constants import PLAYER_STATS_URL
 def keeper_collector() -> BasePlayerCollector:
     return BasePlayerCollector(
         url=PLAYER_STATS_URL,
-        url_params=StatsParams(stat="keeper", table="keeper"),
+        url_params=StatsParams(stat="keepers", table="keeper"),
         validator=KeeperStats,
         cleaners=common_cleaners + [rename_keeper_cols],
     )

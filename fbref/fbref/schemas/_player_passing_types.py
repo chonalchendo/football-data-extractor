@@ -9,8 +9,8 @@ class PassingTypeStats(BaseModel):
     squad: str
     comp: str
     season: str
-    age: str
-    born: str
+    age: str | None 
+    born: str | None
     ninety_mins_played: str
     passes_attempted: str
     live_ball_passes: str

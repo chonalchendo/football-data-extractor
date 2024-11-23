@@ -9,8 +9,8 @@ class ShootingStats(BaseModel):
     squad: str
     comp: str
     season: str
-    age: str
-    born: str
+    age: str | None 
+    born: str | None
     ninety_mins_played: str
     goals: str
     shots: str

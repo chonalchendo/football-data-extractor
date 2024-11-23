@@ -9,8 +9,8 @@ class GcaStats(BaseModel):
     squad: str
     comp: str
     season: str
-    age: str
-    born: str
+    age: str | None 
+    born: str | None
     ninety_mins_played: str
     shot_creating_actions: str
     sca_per_90: str

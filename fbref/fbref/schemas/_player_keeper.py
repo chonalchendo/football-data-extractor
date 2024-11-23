@@ -9,8 +9,8 @@ class KeeperStats(BaseModel):
     squad: str
     comp: str
     season: str
-    age: str
-    born: str
+    age: str | None 
+    born: str | None
     mp: str
     starts: str
     min: str
@@ -19,14 +19,14 @@ class KeeperStats(BaseModel):
     ga_per_90: str
     shots_on_target_against: str
     saves: str
-    save_pct: str
+    save_pct: str | None
     wins: str
     draws: str
     losses: str
     clean_sheets: str
-    clean_sheet_pct: str
+    clean_sheet_pct: str | None
     penalties_faced: str
     penalties_allowed: str
     penalties_saved: str
     penalties_missed: str
-    penalty_save_pct: str
+    penalty_save_pct: str | None

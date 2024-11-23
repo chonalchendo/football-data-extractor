@@ -9,8 +9,8 @@ class StandardStats(BaseModel):
     squad: str
     comp: str
     season: str
-    age: str
-    born: str
+    age: str | None 
+    born: str | None
     mp: str
     starts: str
     min: str

@@ -29,7 +29,7 @@ class ClubsSpider(scrapy.Spider):
             case season if season is None:
                 raise ValueError("No seasons provided")
             case _:
-                self.season = season.split(", ")
+                self.season = season
 
     def parse(self, response: Response) -> Iterator[dict]:
         """

@@ -13,7 +13,7 @@ class ClubsSpider(scrapy.Spider):
     allowed_domains = ["transfermarkt.co.uk"]
     base_url = "https://transfermarkt.co.uk/{league}/startseite/wettbewerb/{league_id}/plus/?saison_id={year}"
 
-    def __init__(self, leagues=None, seasons=None, *args, **kwargs) -> None:
+    def __init__(self, leagues=None, season=None, *args, **kwargs) -> None:
         super(ClubsSpider, self).__init__(*args, **kwargs)
         match leagues:
             case "all":
@@ -23,13 +23,13 @@ class ClubsSpider(scrapy.Spider):
             case _:
                 self.leagues = leagues.split(", ")
 
-        match seasons:
+        match season:
             case "all":
-                self.seasons = [str(i) for i in range(2018, 2024)]
-            case seasons if seasons is None:
+                self.season = [str(i) for i in range(2018, 2024)]
+            case season if season is None:
                 raise ValueError("No seasons provided")
             case _:
-                self.seasons = seasons.split(", ")
+                self.season = season.split(", ")
 
     def parse(self, response: Response) -> Iterator[dict]:
         """
@@ -41,8 +41,9 @@ class ClubsSpider(scrapy.Spider):
         """
         soup = BeautifulSoup(response.text, "html.parser")
         team_info = soup.find_all("td", {"class": "hauptlink no-border-links"})
-        team_name = [td.find("a").get("href").split("/")[1] for td in team_info]
-        team_id = [td.find("a").get("href").split("/")[4] for td in team_info]
+        tm_team_name = [td.find("a").get("href").split("/")[1] for td in team_info]
+        tm_team_id = [td.find("a").get("href").split("/")[4] for td in team_info]
+        team_name = [td.find("a").get("title") for td in team_info]
 
         # get league and season from the url
         url = response.url
@@ -52,8 +53,9 @@ class ClubsSpider(scrapy.Spider):
         yield {
             "league": league,
             "season": season,
+            "tm_team_name": tm_team_name,
+            "tm_team_id": tm_team_id,
             "team_name": team_name,
-            "team_id": team_id,
         }
 
     def start_requests(self) -> Iterator[scrapy.Request]:
@@ -61,10 +63,10 @@ class ClubsSpider(scrapy.Spider):
         Start the requests for the given leagues and seasons.
         @returns request 1
         """
-        for season in self.seasons:
+        for year in self.season:
             for league in self.leagues:
 
                 url = self.base_url.format(
-                    league=league, league_id=league_map.get(league), year=season
+                    league=league, league_id=league_map.get(league), year=year
                 )
                 yield scrapy.Request(url, callback=self.parse)

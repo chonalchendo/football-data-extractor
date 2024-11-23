@@ -29,7 +29,7 @@ class ClubsSpider(scrapy.Spider):
             case season if season is None:
                 raise ValueError("No seasons provided")
             case _:
-                self.season = [season]
+                self.season = season
 
     def parse(self, response: Response) -> Iterator[dict]:
         """
@@ -63,10 +63,8 @@ class ClubsSpider(scrapy.Spider):
         Start the requests for the given leagues and seasons.
         @returns request 1
         """
-        for year in self.season:
-            for league in self.leagues:
-
-                url = self.base_url.format(
-                    league=league, league_id=league_map.get(league), year=year
-                )
-                yield scrapy.Request(url, callback=self.parse)
+        for league in self.leagues:
+            url = self.base_url.format(
+                league=league, league_id=league_map.get(league), year=self.season
+            )
+            yield scrapy.Request(url, callback=self.parse)

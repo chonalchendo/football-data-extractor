@@ -16,6 +16,7 @@ class Player(BaseModel):
     signing_fee: str
     tm_id: str
     tm_name: str
+    tm_squad: str
     foot: str
     season: int
     squad: str

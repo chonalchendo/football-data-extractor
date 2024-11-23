@@ -14,6 +14,7 @@ from ._signing_info import SigningInfo
 from ._tm_ids import TransfermarktId
 from ._tm_names import TransfermarktName
 from ._values import Values
+from ._squad_names import get_squad_name
 
 squad_parsers: Sequence[Parser] = (
     Ages(),
@@ -33,4 +34,5 @@ squad_parsers: Sequence[Parser] = (
 
 __all__ = [
     "squad_parsers",
+    "get_squad_name"
 ]

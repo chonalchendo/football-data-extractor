@@ -8,7 +8,7 @@ from pydantic import ValidationError
 from scrapy.exceptions import CloseSpider
 from scrapy.http import Response
 
-from ..parsers.squads import squad_parsers
+from ..parsers.squads import squad_parsers, get_squad_name
 from ..schemas import Player
 
 
@@ -40,11 +40,14 @@ class SquadsSpider(scrapy.Spider):
 
         # add season and squads to data
         url = response.url
-        squad = urlparse(url).path.split("/")[1]
+        tm_squad = urlparse(url).path.split("/")[1]
         season = int(urlparse(url).path.split("/")[6])
+
+        squad = get_squad_name(soup=soup)  # real squad name
 
         data = data.with_columns(
             pl.Series("season", [season] * len(data)),
+            pl.Series("tm_squad", [tm_squad] * len(data)),
             pl.Series("squad", [squad] * len(data)),
         )
 

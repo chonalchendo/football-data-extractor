@@ -15,6 +15,15 @@ class Feed(ABC):
         self.output_path = output_path
         self.format = format
         self.items: list[dict] = []
+        self._formatted_output_path: str | None = None
+        
+    @property
+    def formatted_output_path(self) -> str | None:
+        return self._formatted_output_path
+    
+    @formatted_output_path.setter
+    def formatted_output_path(self, value: str) -> None:
+        self._formatted_output_path = value
 
     @abstractmethod
     def write(self, item: dict[str, Any]) -> None:
@@ -58,8 +67,8 @@ class GcsFeed(Feed):
 
 class ParquetFeed(Feed):
     def __init__(self, output_path: str, format: str) -> None:
-        super().__init__(output_path, format)
-
+        super().__init__(output_path, format)        
+    
     def write(self, item: dict) -> None:
         self.items.append(item)
 
@@ -67,14 +76,16 @@ class ParquetFeed(Feed):
         if not self.items:
             logger.error("No items to write - DataFrame would be empty")
 
-        Path(self.output_path).parent.mkdir(parents=True, exist_ok=True)
-
+        Path(self.formatted_output_path).parent.mkdir(parents=True, exist_ok=True)
+        
         try:
             data = pl.DataFrame(self.items)
-            data.write_parquet(self.output_path, use_pyarrow=True)
+            data.write_parquet(self.formatted_output_path, use_pyarrow=True)
             logger.info(
-                f"Successfully wrote {len(self.items)} items to {self.output_path}"
+                f"Successfully wrote {len(self.items)} items to {self.formatted_output_path}"
             )
         except Exception as e:
-            logger.error(f"Failed to write data to {self.output_path}: {str(e)}")
+            logger.error(
+                f"Failed to write data to {self.formatted_output_path}: {str(e)}"
+            )
             raise

@@ -81,7 +81,7 @@ class NavigatorRunner:
                 comp_name: str = self._params["comp_name"].replace("-", "_")
                 output_name = f"{self._collector}_{comp_name.lower()}"
 
-        self.feed.output_path = self.feed.output_path.format(
+        self.feed.formatted_output_path = self.feed.output_path.format(
             season=self._season, name=output_name
         )
 

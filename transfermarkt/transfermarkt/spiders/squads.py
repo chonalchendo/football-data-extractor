@@ -1,5 +1,6 @@
+from collections.abc import Sequence
 from typing import Iterator
-from urllib.parse import urlparse
+# from urllib.parse import urlparse
 
 import polars as pl
 import scrapy
@@ -8,8 +9,9 @@ from pydantic import ValidationError
 from scrapy.exceptions import CloseSpider
 from scrapy.http import Response
 
-from ..parsers.squads import squad_parsers, get_squad_name
+from ..parsers.squads import squad_parsers
 from ..schemas import Player
+from ..parsers.base import Parser
 
 
 class SquadsSpider(scrapy.Spider):
@@ -19,9 +21,11 @@ class SquadsSpider(scrapy.Spider):
         "https://transfermarkt.co.uk/{squad}/kader/verein/{id}/saison_id/{year}/plus/1"
     )
 
-    def __init__(self, season=None) -> None:
+    def __init__(self, season: str | None = None, clubs: dict | None = None) -> None:
         self.season = season
-        self.parsers = squad_parsers
+        self.clubs = clubs
+        self._parsers: Sequence[Parser] = squad_parsers
+        self._parsed_squad_info: dict = {}
 
     def parse(self, response: Response) -> Iterator[dict]:
         """
@@ -29,24 +33,30 @@ class SquadsSpider(scrapy.Spider):
 
         @url https://transfermarkt.co.uk/arsenal-fc/kader/verein/11/saison_id/2020/plus/1
         @returns items 1
-        @scrapes dob age country current_club foot height joined_date name number position signed_from signing_fee tm_id tm_name value season squad
+        @scrapes dob age country current_club foot height joined_date name number position signed_from signing_fee tm_squad_id tm_squad value season squad
         """
         soup = self.soupify(response)
 
         # concatenate parsers together
         data = pl.concat(
-            [parser.parse(soup) for parser in self.parsers], how="horizontal"
+            [parser.parse(soup) for parser in self._parsers], how="horizontal"
         )
 
         # add season and squads to data
-        url = response.url
-        tm_squad = urlparse(url).path.split("/")[1]
-        season = int(urlparse(url).path.split("/")[6])
+        # url = response.url
+        # tm_squad = urlparse(url).path.split("/")[1]
+        # season = int(urlparse(url).path.split("/")[6])
 
-        squad = get_squad_name(soup=soup)  # real squad name
+        # squad = get_squad_name(soup=soup)  # real squad name
+
+        season = self._parsed_squad_info["season"]
+        tm_squad_id = self._parsed_squad_info["tm_team_id"]
+        tm_squad = self._parsed_squad_info["tm_team_name"]
+        squad = self._parsed_squad_info["team_name"]
 
         data = data.with_columns(
             pl.Series("season", [season] * len(data)),
+            pl.Series("tm_squad_id", [tm_squad_id] * len(data)),
             pl.Series("tm_squad", [tm_squad] * len(data)),
             pl.Series("squad", [squad] * len(data)),
         )
@@ -73,21 +83,32 @@ class SquadsSpider(scrapy.Spider):
         @return request 1
         """
 
-        path = "data/clubs.json.gz"
-        clubs = pl.read_ndjson(path).sort("season")
+        # path = "data/clubs.json.gz"
+        # clubs = pl.read_ndjson(path).sort("season")
 
         # filter based on the season
-        match self.season:
-            case "all":
-                pass
-            case None:
-                raise ValueError("No season provided")
-            case _:
-                clubs = clubs.filter(pl.col("season") == str(self.season))
+        # match self.season:
+        #     case "all":
+        #         pass
+        #     case None:
+        #         raise ValueError("No season provided")
+        #     case _:
+        #         clubs = self.clubs.filter(pl.col("season") == str(self.season))
 
-        for row in clubs.to_dicts():
-            for team, id in zip(row["team_name"], row["team_id"]):
+        for row in self.clubs:
+            for team, id in zip(row["tm_team_name"], row["tm_team_id"]):
                 url = self.url.format(squad=team, id=id, year=row["season"])
+
+                # store values to add to final dataframe
+                self._parsed_squad_info.update(
+                    {
+                        "tm_team_name": team,
+                        "tm_team_id": id,
+                        "team_name": row["team_name"],
+                        "season": row["season"],
+                    }
+                )
+
                 yield scrapy.Request(
                     url=url,
                     callback=self.parse,

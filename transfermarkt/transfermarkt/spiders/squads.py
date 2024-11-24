@@ -45,12 +45,14 @@ class SquadsSpider(scrapy.Spider):
         tm_squad_id = self._parsed_squad_info["tm_team_id"]
         tm_squad = self._parsed_squad_info["tm_team_name"]
         squad = self._parsed_squad_info["team_name"]
+        league = self._parsed_squad_info["league"]
 
         data = data.with_columns(
             pl.Series("season", [season] * len(data)),
             pl.Series("tm_squad_id", [tm_squad_id] * len(data)),
             pl.Series("tm_squad", [tm_squad] * len(data)),
             pl.Series("squad", [squad] * len(data)),
+            pl.Series("league", [league] * len(data)),
         )
 
         for record in data.to_dicts():
@@ -87,6 +89,7 @@ class SquadsSpider(scrapy.Spider):
                         "tm_team_name": tm_team,
                         "tm_team_id": id,
                         "team_name": squad,
+                        "league": row["league"],
                         "season": row["season"],
                     }
                 )

@@ -17,6 +17,6 @@ class Player(BaseModel):
     tm_id: str
     tm_name: str
     tm_squad: str
-    foot: str
+    foot: str | None
     season: int
     squad: str

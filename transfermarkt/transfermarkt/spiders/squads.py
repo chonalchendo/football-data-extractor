@@ -1,4 +1,3 @@
-from collections.abc import Sequence
 from typing import Iterator
 
 import polars as pl
@@ -8,9 +7,8 @@ from pydantic import ValidationError
 from scrapy.exceptions import CloseSpider
 from scrapy.http import Response
 
-from ..parsers.squads import squad_parsers
+from ..parsers.squads import get_squad_parsers
 from ..schemas import Player
-from ..parsers.base import Parser
 
 
 class SquadsSpider(scrapy.Spider):
@@ -23,7 +21,6 @@ class SquadsSpider(scrapy.Spider):
     def __init__(self, season: str | None = None, clubs: dict | None = None) -> None:
         self.season = season
         self.clubs = clubs
-        self._parsers: Sequence[Parser] = squad_parsers
         self._parsed_squad_info: dict = {}
 
     def parse(self, response: Response) -> Iterator[dict]:
@@ -36,19 +33,23 @@ class SquadsSpider(scrapy.Spider):
         """
         soup = self.soupify(response)
 
-        # concatenate parsers together
-        data = pl.concat(
-            [parser.parse(soup) for parser in self._parsers], how="horizontal"
-        )
+        if self.season != "2024":
+            index = "pre-2024"
+        else:
+            index = "2024"
 
-        season = self._parsed_squad_info["season"]
+        parsers = get_squad_parsers(index=index)
+
+        # concatenate parsers together
+        data = pl.concat([parser(soup) for parser in parsers], how="horizontal")
+
         tm_squad_id = self._parsed_squad_info["tm_team_id"]
         tm_squad = self._parsed_squad_info["tm_team_name"]
         squad = self._parsed_squad_info["team_name"]
         league = self._parsed_squad_info["league"]
 
         data = data.with_columns(
-            pl.Series("season", [season] * len(data)),
+            pl.Series("season", [self.season] * len(data)),
             pl.Series("tm_squad_id", [tm_squad_id] * len(data)),
             pl.Series("tm_squad", [tm_squad] * len(data)),
             pl.Series("squad", [squad] * len(data)),

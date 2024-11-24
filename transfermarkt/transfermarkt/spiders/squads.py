@@ -85,7 +85,7 @@ class SquadsSpider(scrapy.Spider):
         """
 
         for row in self.clubs:
-            for tm_team, id, tm_team in zip(
+            for tm_team, id, squad in zip(
                 row["tm_team_name"], row["tm_team_id"], row["team_name"]
             ):
                 url = self.url.format(squad=tm_team, id=id, year=row["season"])
@@ -95,7 +95,7 @@ class SquadsSpider(scrapy.Spider):
                     {
                         "tm_team_name": tm_team,
                         "tm_team_id": id,
-                        "team_name": tm_team,
+                        "team_name": squad,
                         "season": row["season"],
                     }
                 )

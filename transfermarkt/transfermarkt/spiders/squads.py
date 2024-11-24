@@ -1,8 +1,6 @@
 from collections.abc import Sequence
 from typing import Iterator
 
-# from urllib.parse import urlparse
-
 import polars as pl
 import scrapy
 from bs4 import BeautifulSoup
@@ -42,13 +40,6 @@ class SquadsSpider(scrapy.Spider):
         data = pl.concat(
             [parser.parse(soup) for parser in self._parsers], how="horizontal"
         )
-
-        # add season and squads to data
-        # url = response.url
-        # tm_squad = urlparse(url).path.split("/")[1]
-        # season = int(urlparse(url).path.split("/")[6])
-
-        # squad = get_squad_name(soup=soup)  # real squad name
 
         season = self._parsed_squad_info["season"]
         tm_squad_id = self._parsed_squad_info["tm_team_id"]

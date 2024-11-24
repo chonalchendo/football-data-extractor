@@ -1,7 +1,7 @@
 import polars as pl
 from bs4 import BeautifulSoup
 
-from transfermarkt.transfermarkt.config.parser_indexes import INDEXES
+from ...config.parser_indexes import INDEXES
 
 
 def parse_signing_info(soup: BeautifulSoup, index: str) -> pl.DataFrame:

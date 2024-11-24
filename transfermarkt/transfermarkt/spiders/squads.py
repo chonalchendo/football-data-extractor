@@ -1,5 +1,6 @@
 from collections.abc import Sequence
 from typing import Iterator
+
 # from urllib.parse import urlparse
 
 import polars as pl
@@ -83,28 +84,18 @@ class SquadsSpider(scrapy.Spider):
         @return request 1
         """
 
-        # path = "data/clubs.json.gz"
-        # clubs = pl.read_ndjson(path).sort("season")
-
-        # filter based on the season
-        # match self.season:
-        #     case "all":
-        #         pass
-        #     case None:
-        #         raise ValueError("No season provided")
-        #     case _:
-        #         clubs = self.clubs.filter(pl.col("season") == str(self.season))
-
         for row in self.clubs:
-            for team, id in zip(row["tm_team_name"], row["tm_team_id"]):
-                url = self.url.format(squad=team, id=id, year=row["season"])
+            for tm_team, id, tm_team in zip(
+                row["tm_team_name"], row["tm_team_id"], row["team_name"]
+            ):
+                url = self.url.format(squad=tm_team, id=id, year=row["season"])
 
                 # store values to add to final dataframe
                 self._parsed_squad_info.update(
                     {
-                        "tm_team_name": team,
+                        "tm_team_name": tm_team,
                         "tm_team_id": id,
-                        "team_name": row["team_name"],
+                        "team_name": tm_team,
                         "season": row["season"],
                     }
                 )

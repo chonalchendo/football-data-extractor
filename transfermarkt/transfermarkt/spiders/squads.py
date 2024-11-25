@@ -21,7 +21,6 @@ class SquadsSpider(scrapy.Spider):
     def __init__(self, season: str | None = None, clubs: dict | None = None) -> None:
         self.season = season
         self.clubs = clubs
-        self._parsed_squad_info: dict = {}
 
     def parse(self, response: Response) -> Iterator[dict]:
         """
@@ -43,11 +42,6 @@ class SquadsSpider(scrapy.Spider):
         # concatenate parsers together
         data = pl.concat([parser(soup) for parser in parsers], how="horizontal")
 
-        # tm_squad_id = self._parsed_squad_info["tm_team_id"]
-        # tm_squad = self._parsed_squad_info["tm_team_name"]
-        # squad = self._parsed_squad_info["team_name"]
-        # league = self._parsed_squad_info["league"]
-        
         tm_squad_id = response.meta["tm_team_id"]
         tm_squad = response.meta["tm_team_name"]
         squad = response.meta["team_name"]
@@ -88,17 +82,6 @@ class SquadsSpider(scrapy.Spider):
                 row["tm_team_name"], row["tm_team_id"], row["team_name"]
             ):
                 url = self.url.format(squad=tm_team, id=id, year=row["season"])
-
-                # store values to add to final dataframe
-                # self._parsed_squad_info.update(
-                #     {
-                #         "tm_team_name": tm_team,
-                #         "tm_team_id": id,
-                #         "team_name": squad,
-                #         "league": row["league"],
-                #         "season": row["season"],
-                #     }
-                # )
 
                 yield scrapy.Request(
                     url=url,

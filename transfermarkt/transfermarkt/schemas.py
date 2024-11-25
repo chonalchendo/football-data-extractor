@@ -20,3 +20,4 @@ class Player(BaseModel):
     foot: str | None
     season: int
     squad: str
+    league: str

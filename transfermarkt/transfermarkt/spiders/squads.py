@@ -43,10 +43,15 @@ class SquadsSpider(scrapy.Spider):
         # concatenate parsers together
         data = pl.concat([parser(soup) for parser in parsers], how="horizontal")
 
-        tm_squad_id = self._parsed_squad_info["tm_team_id"]
-        tm_squad = self._parsed_squad_info["tm_team_name"]
-        squad = self._parsed_squad_info["team_name"]
-        league = self._parsed_squad_info["league"]
+        # tm_squad_id = self._parsed_squad_info["tm_team_id"]
+        # tm_squad = self._parsed_squad_info["tm_team_name"]
+        # squad = self._parsed_squad_info["team_name"]
+        # league = self._parsed_squad_info["league"]
+        
+        tm_squad_id = response.meta["tm_team_id"]
+        tm_squad = response.meta["tm_team_name"]
+        squad = response.meta["team_name"]
+        league = response.meta["league"]
 
         data = data.with_columns(
             pl.Series("season", [self.season] * len(data)),
@@ -85,17 +90,24 @@ class SquadsSpider(scrapy.Spider):
                 url = self.url.format(squad=tm_team, id=id, year=row["season"])
 
                 # store values to add to final dataframe
-                self._parsed_squad_info.update(
-                    {
+                # self._parsed_squad_info.update(
+                #     {
+                #         "tm_team_name": tm_team,
+                #         "tm_team_id": id,
+                #         "team_name": squad,
+                #         "league": row["league"],
+                #         "season": row["season"],
+                #     }
+                # )
+
+                yield scrapy.Request(
+                    url=url,
+                    callback=self.parse,
+                    meta={
                         "tm_team_name": tm_team,
                         "tm_team_id": id,
                         "team_name": squad,
                         "league": row["league"],
                         "season": row["season"],
-                    }
-                )
-
-                yield scrapy.Request(
-                    url=url,
-                    callback=self.parse,
+                    },
                 )

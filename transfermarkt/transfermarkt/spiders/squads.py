@@ -48,7 +48,7 @@ class SquadsSpider(scrapy.Spider):
         league = response.meta["league"]
 
         if index == "2024":  # current club is Null for 2024
-            data["current_club"] = [squad] * len(data)
+            data = data.with_columns(current_club=pl.Series(values=[squad] * len(data)))
 
         data = data.with_columns(
             pl.Series("season", [self.season] * len(data)),

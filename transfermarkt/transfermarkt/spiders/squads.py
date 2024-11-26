@@ -9,6 +9,7 @@ from scrapy.http import Response
 
 from ..parsers.squads import get_squad_parsers
 from ..schemas import Player
+from ..config.parser_indexes import CURRENT_YEAR
 
 
 class SquadsSpider(scrapy.Spider):
@@ -32,10 +33,10 @@ class SquadsSpider(scrapy.Spider):
         """
         soup = self.soupify(response)
 
-        if self.season != "2024":
-            index = "pre-2024"
+        if self.season != CURRENT_YEAR:
+            index = f"pre-{CURRENT_YEAR}"
         else:
-            index = "2024"
+            index = CURRENT_YEAR
 
         parsers = get_squad_parsers(index=index)
 
@@ -47,7 +48,7 @@ class SquadsSpider(scrapy.Spider):
         squad = response.meta["team_name"]
         league = response.meta["league"]
 
-        if index == "2024":  # current club is Null for 2024
+        if index == CURRENT_YEAR:  # current club is Null for 2024
             data = data.with_columns(current_club=pl.Series(values=[squad] * len(data)))
 
         data = data.with_columns(

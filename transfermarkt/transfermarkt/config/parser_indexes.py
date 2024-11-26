@@ -1,5 +1,8 @@
+CURRENT_YEAR = "2024"
+
+
 INDEXES = {
-    "2024": {
+    CURRENT_YEAR: {
         "current_club": None,
         "numbers": 0,
         "ages": 1,
@@ -10,7 +13,7 @@ INDEXES = {
         "signing_info": 6,
         'contract_expiry': 7,
     },
-    "pre-2024": {
+    f"pre-{CURRENT_YEAR}": {
         "numbers": 0,
         "ages": 1,
         "countries": 2,

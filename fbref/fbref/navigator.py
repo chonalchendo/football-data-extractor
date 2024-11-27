@@ -86,6 +86,7 @@ class NavigatorRunner:
         )
 
         if self.download_deplay is not None:
+            logger.info(f'Download delay for {self.download_deplay} seconds')
             time.sleep(self.download_deplay)
 
         try:

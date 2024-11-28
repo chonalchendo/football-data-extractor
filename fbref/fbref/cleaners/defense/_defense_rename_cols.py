@@ -11,7 +11,6 @@ def defense_rename_cols(df: pl.DataFrame) -> pl.DataFrame:
         pl.DataFrame: fbref dataframe with renamed columns
     """
     rename_cols = {
-        "pos": "position",
         "90s": "ninety_mins_played",
         "tkl": "tackles",
         "tklw": "tackles_won",

@@ -10,7 +10,7 @@ class DefenseStats(BaseModel):
     season: str
     age: str | None
     born: str | None
-    position: str
+    pos: str
     ninety_mins_played: str
     tackles: str
     tackles_won: str

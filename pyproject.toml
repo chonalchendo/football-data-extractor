@@ -23,3 +23,7 @@ dependencies = [
 
 [tool.setuptools]
 packages = ['fbref.fbref', 'transfermarkt.transfermarkt']
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["fbref.fbref*", "transfermarkt.transfermarkt*"]

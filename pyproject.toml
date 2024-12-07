@@ -21,8 +21,6 @@ dependencies = [
     "scrapy>=2.12.0",
 ]
 
-[tool.setuptools]
-packages = ['fbref', 'transfermarkt']
 
 [tool.setuptools.packages.find]
 where = ["."]

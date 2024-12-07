@@ -6,7 +6,7 @@ import pandas as pd
 import polars as pl
 from pydantic import BaseModel
 
-from utils.logger import get_logger
+from ..utils.logger import get_logger
 
 logger = get_logger(__name__)
 

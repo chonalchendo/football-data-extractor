@@ -1,13 +1,14 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "football-data-extractor"
 version = "0.1.0"
 description = "Project that scrapes football data from multiple web sources."
 readme = "README.md"
 requires-python = ">=3.12.0"
-# packages = [
-#     { include = "transfermarkt/transfermarkt" },
-#     { include = "fbref/fbref"}
-# ]
+
 dependencies = [
     "beautifulsoup4>=4.12.3",
     "gcsfs>=2024.10.0",
@@ -19,3 +20,6 @@ dependencies = [
     "rich>=13.9.4",
     "scrapy>=2.12.0",
 ]
+
+[tool.setuptools]
+packages = ['fbref.fbref', 'transfermarkt.transfermarkt']

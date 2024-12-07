@@ -5,8 +5,7 @@ from pathlib import Path
 import gcsfs
 import polars as pl
 
-# from utils.logger import get_logger
-from fbref.utils.logger import get_logger
+from .utils.logger import get_logger
 
 
 logger = get_logger(__name__)
@@ -18,11 +17,11 @@ class Feed(ABC):
         self.format = format
         self.items: list[dict] = []
         self._formatted_output_path: str | None = None
-        
+
     @property
     def formatted_output_path(self) -> str | None:
         return self._formatted_output_path
-    
+
     @formatted_output_path.setter
     def formatted_output_path(self, value: str) -> None:
         self._formatted_output_path = value
@@ -69,8 +68,8 @@ class GcsFeed(Feed):
 
 class ParquetFeed(Feed):
     def __init__(self, output_path: str, format: str) -> None:
-        super().__init__(output_path, format)        
-    
+        super().__init__(output_path, format)
+
     def write(self, item: dict) -> None:
         self.items.append(item)
 
@@ -79,7 +78,7 @@ class ParquetFeed(Feed):
             logger.error("No items to write - DataFrame would be empty")
 
         Path(self.formatted_output_path).parent.mkdir(parents=True, exist_ok=True)
-        
+
         try:
             data = pl.DataFrame(self.items)
             data.write_parquet(self.formatted_output_path, use_pyarrow=True)

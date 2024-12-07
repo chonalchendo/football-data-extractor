@@ -5,7 +5,7 @@ from pathlib import Path
 import gcsfs
 import polars as pl
 
-from .utils.logger import get_logger
+from utils.logger import get_logger
 
 logger = get_logger(__name__)
 

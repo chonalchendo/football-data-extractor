@@ -22,8 +22,7 @@ dependencies = [
 ]
 
 [tool.setuptools]
-packages = ['fbref.fbref', 'transfermarkt.transfermarkt']
-py-modules = []
+packages = ['fbref', 'transfermarkt']
 
 [tool.setuptools.packages.find]
 where = ["."]

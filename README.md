@@ -1,7 +1,7 @@
 # Football Data Extractor
 
 This project aims to provide the functionality to extract football data from various public resources and file to a users local project file system.
-This project is the provides the code to extract data for the [Football Data Warehouse](https://github.com/chonalchendo/football-data-warehouse) project which aims to provide a comprehensive data warehouse for football data.
+This project provides the code to extract data for the [Football Data Warehouse](https://github.com/chonalchendo/football-data-warehouse) project which aims to provide a comprehensive data warehouse for football data.
 
 Currently, there is functionality to extract data from two sources:
 
@@ -66,6 +66,7 @@ This will then allow you to use the `fbref` and `transfermarkt` packages inside 
 ### Fbref example
 
 Fbref is a custom extractor developed using `pandas` and `beautifulsoup` to extract data from the fbref website.
+Therefore, you can call fbref as a package inside your python scripts.
 
 ```python
 
@@ -87,7 +88,8 @@ def run_stats_crawler(collector: str, season: str) -> None:
 
 ### Transfermarkt example
 
-Transfermarkt is built using `scrapy` to extract data from the transfermarkt website.
+Transfermarkt is built using [scrapy](https://docs.scrapy.org/en/latest/) to extract data from the transfermarkt website.
+This means you can use `scrapy` to run the spiders defined in the `transfermarkt` package.
 
 ```python
 from pathlib import Path

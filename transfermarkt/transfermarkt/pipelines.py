@@ -69,3 +69,18 @@ class TransfermarktParquetPipeline:
         Path(formatted_feeds).parent.mkdir(parents=True, exist_ok=True)
 
         data.write_parquet(formatted_feeds, use_pyarrow=True)
+
+
+class TransfermarktDataFramePipeline:
+    def __init__(self) -> None:
+        self.data: list[dict[str, Any]] = []
+
+    def process_item(self, item: dict[str, Any], spider: Spider) -> None:
+        self.data.append(item)
+        return item
+
+    def close_spider(self, spider: Spider) -> pl.DataFrame:
+        if len(self.data) == 0:
+            raise ValueError("DataFrame is Empty")
+
+        return pl.DataFrame(self.data)

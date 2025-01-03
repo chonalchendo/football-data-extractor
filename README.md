@@ -61,6 +61,14 @@ in the [Football Data Warehouse](https://github.com/chonalchendo/football-data-w
 uv add https://github.com/chonalchendo/football-data-extractor.git
 ```
 
+You must also add your `USER_AGENT` to your `.env` file otherwise the `scrapy` `transfermarkt` spiders will not work.
+
+```dotenv
+USER_AGENT = "INSERT YOUR USER AGENT HERE"
+```
+
+You can get your user agent by simply googling, "what is my user agent?"
+
 This will then allow you to use the `fbref` and `transfermarkt` packages inside your own project.
 
 ### Fbref example

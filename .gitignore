@@ -8,3 +8,4 @@ fbref/data/
 transfermarkt/data/
 fbref/fbref/test.py
 transfermarkt/test.py
+.env
